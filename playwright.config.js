@@ -1,11 +1,11 @@
 // @ts-check
-import { defineConfig, devices } from '@playwright/test';
-import { config } from 'dotenv';
+import { defineConfig, devices } from "@playwright/test";
+import { config } from "dotenv";
 
 config();
 
 export default defineConfig({
-  testDir: './tests',
+  testDir: "./tests",
   fullyParallel: true,
   retries: process.env.CI ? 1 : 0,
   workers: process.env.CI ? 4 : 4,
@@ -16,7 +16,7 @@ export default defineConfig({
     toMatchSnapshot: { maxDiffPixelRatio: 0.03 },
     toHaveScreenshot: { maxDiffPixelRatio: 0.03 },
   },
-  reporter: 'html',
+  reporter: "html",
   use: {
     baseURL: process.env.BASE_URL,
     testIdAttribute: "data-id",
@@ -30,9 +30,12 @@ export default defineConfig({
 
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      name: "setup",
+      testMatch: /.*\.setup\.js/,
     },
-  ]
+    {
+      name: "chromium",
+      use: { ...devices["Desktop Chrome"] },
+    },
+  ],
 });
-
