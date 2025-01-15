@@ -1,8 +1,6 @@
 //@ts-check
-
 import { test, expect } from "@playwright/test";
 import { randomSlug, randomString } from "../../utils/random-data";
-import { link } from "fs";
 
 test.describe("Betterlinks @betterlinks", () => {
   const category_name = randomString();
