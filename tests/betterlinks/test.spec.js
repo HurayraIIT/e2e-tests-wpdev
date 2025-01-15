@@ -1,8 +1,6 @@
 //@ts-check
-
 import { test, expect } from "@playwright/test";
 import { randomSlug, randomString } from "../../utils/random-data";
-import { link } from "fs";
 
 test.describe("Betterlinks @betterlinks", () => {
   const category_name = randomString();
@@ -19,17 +17,17 @@ test.describe("Betterlinks @betterlinks", () => {
 
     await page.goto("/wp-admin/admin.php?page=betterlinks");
 
-    await expect(page.locator("#betterlinksbody div").filter({ hasText: /^BetterLinks$/ })).toBeVisible();
-    await expect(page.getByRole("button", { name: "Add New Link" })).toBeVisible();
-    await expect(page.getByRole("button", { name: "Favorite Links" })).toBeVisible();
+    await expect.soft(page.locator("#betterlinksbody div").filter({ hasText: /^BetterLinks$/ })).toBeVisible();
+    await expect.soft(page.getByRole("button", { name: "Add New Link" })).toBeVisible();
+    await expect.soft(page.getByRole("button", { name: "Favorite Links" })).toBeVisible();
     await expect.soft(page.getByText("Add New Category")).toBeVisible();
 
     // Create a new category
     await page.locator("button.dnd-create-category-button").click();
-    await expect(page.getByText("Add New Category")).toBeVisible();
+    await expect.soft(page.getByText("Add New Category")).toBeVisible();
     await page.getByPlaceholder("* Name").fill(category_name);
     await page.getByRole("button", { name: "Submit" }).click();
-    await expect(page.getByRole("heading", { name: category_name })).toBeVisible();
+    await expect.soft(page.getByRole("heading", { name: category_name })).toBeVisible();
 
     // Create a new link
     await page
@@ -46,31 +44,31 @@ test.describe("Betterlinks @betterlinks", () => {
     await page.getByLabel("Shortened URL").fill(short_link_slug);
 
     await page.getByRole("button", { name: "Publish" }).click();
-    await expect(page.getByRole("button", { name: link_title, exact: true })).toBeVisible();
+    await expect.soft(page.getByRole("button", { name: link_title, exact: true })).toBeVisible();
 
     // Assert link functionality
     await page.goto(short_link);
-    await expect(page.url()).toBe(target_link);
+    await expect.soft(page.url()).toBe(target_link);
 
     // Delete the link
     await page.goto("/wp-admin/admin.php?page=betterlinks");
     await page.getByRole("heading", { name: link_title }).locator("..").locator("button.delete-button").click();
-    await expect(page.getByRole("button", { name: "Yes", exact: true })).toBeVisible();
+    await expect.soft(page.getByRole("button", { name: "Yes", exact: true })).toBeVisible();
     await page.getByRole("button", { name: "Yes", exact: true }).click();
-    await expect(page.getByText(link_title)).not.toBeVisible();
+    await expect.soft(page.getByText(link_title)).not.toBeVisible();
     
     // Delete the category
     await page.getByRole("heading", { name: category_name }).locator("..").locator("div.dropdown").click();
     await page.getByRole("button", { name: "Delete" }).click();
-    await expect(page.getByText("Are You Sure?YesNo")).toBeVisible();
+    await expect.soft(page.getByText("Are You Sure?YesNo")).toBeVisible();
     await page.getByRole("button", { name: "Yes" }).click();
-    await expect(page.getByText("Add New Category")).toBeVisible();
-    await expect(page.getByText(category_name)).not.toBeVisible();
+    await expect.soft(page.getByText("Add New Category")).toBeVisible();
+    await expect.soft(page.getByText(category_name)).not.toBeVisible();
 
     // Reload and verify
     await page.reload();
-    await expect(page.getByText(link_title)).not.toBeVisible();
-    await expect(page.getByText(category_name)).not.toBeVisible();
+    await expect.soft(page.getByText(link_title)).not.toBeVisible();
+    await expect.soft(page.getByText(category_name)).not.toBeVisible();
 
     await adminContext.close();
   });
