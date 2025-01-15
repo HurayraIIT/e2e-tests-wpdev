@@ -2,81 +2,25 @@
 
 import { test as setup, expect } from "@playwright/test";
 
-const loginUrl = `${process.env.BASE_URL}/wp-login.php`;
+const users = ["admin", "editor", "author", "contributor", "subscriber"];
 
-const adminFile = "playwright/.auth/admin.json";
-const editorFile = "playwright/.auth/editor.json";
-const authorFile = "playwright/.auth/author.json";
-const contributorFile = "playwright/.auth/contributor.json";
-const subscriberFile = "playwright/.auth/subscriber.json";
-const unauthFile = "playwright/.auth/unauth.json";
 
-setup("authenticate as admin", async ({ page }) => {
-  await page.goto(loginUrl);
+users.forEach((user) => {
+  setup(`authenticating as ${user}`, async ({ page }) => {
+    const authFile = `playwright/.auth/${user}.json`;
+    const username = `${process.env[`${user.toUpperCase()}_USER`]}`;
+    const password = `${process.env.PASS}`;
 
-  await page.getByLabel("Username or Email Address").fill(`${process.env.ADMIN_USER}`);
-  await page.getByLabel("Password", { exact: true }).fill(`${process.env.PASS}`);
-  await page.getByLabel("Remember Me").check();
-  await page.getByRole("button", { name: "Log In" }).click();
+    await page.goto(`${process.env.BASE_URL}/wp-login.php`);
 
-  await page.waitForURL(`${process.env.BASE_URL}/wp-admin/`);
-  await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
+    await page.getByLabel("Username or Email Address").fill(username);
+    await page.getByLabel("Password", { exact: true }).fill(password);
+    await page.getByLabel("Remember Me").check();
+    await page.getByRole("button", { name: "Log In" }).click();
 
-  await page.context().storageState({ path: adminFile });
-});
+    await page.waitForURL(/wp-admin/);
+    await expect(page.getByRole("menuitem", { name: `Howdy, ${username}` })).toBeVisible();
 
-setup("authenticate as editor", async ({ page }) => {
-  await page.goto(loginUrl);
-
-  await page.getByLabel("Username or Email Address").fill(`${process.env.EDITOR_USER}`);
-  await page.getByLabel("Password", { exact: true }).fill(`${process.env.PASS}`);
-  await page.getByLabel("Remember Me").check();
-  await page.getByRole("button", { name: "Log In" }).click();
-
-  await page.waitForURL(`${process.env.BASE_URL}/wp-admin/`);
-  await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
-
-  await page.context().storageState({ path: editorFile });
-});
-
-setup("authenticate as author", async ({ page }) => {
-  await page.goto(loginUrl);
-
-  await page.getByLabel("Username or Email Address").fill(`${process.env.AUTHOR_USER}`);
-  await page.getByLabel("Password", { exact: true }).fill(`${process.env.PASS}`);
-  await page.getByLabel("Remember Me").check();
-  await page.getByRole("button", { name: "Log In" }).click();
-
-  await page.waitForURL(`${process.env.BASE_URL}/wp-admin/`);
-  await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
-
-  await page.context().storageState({ path: authorFile });
-});
-
-setup("authenticate as contributor", async ({ page }) => {
-  await page.goto(loginUrl);
-
-  await page.getByLabel("Username or Email Address").fill(`${process.env.CONTRIBUTOR_USER}`);
-  await page.getByLabel("Password", { exact: true }).fill(`${process.env.PASS}`);
-  await page.getByLabel("Remember Me").check();
-  await page.getByRole("button", { name: "Log In" }).click();
-
-  await page.waitForURL(`${process.env.BASE_URL}/wp-admin/`);
-  await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
-
-  await page.context().storageState({ path: contributorFile });
-});
-
-setup("authenticate as subscriber", async ({ page }) => {
-  await page.goto(loginUrl);
-
-  await page.getByLabel("Username or Email Address").fill(`${process.env.SUBSCRIBER_USER}`);
-  await page.getByLabel("Password", { exact: true }).fill(`${process.env.PASS}`);
-  await page.getByLabel("Remember Me").check();
-  await page.getByRole("button", { name: "Log In" }).click();
-
-  await page.waitForURL(/wp-admin/);
-  await expect(page.getByRole("heading", { name: "Profile" })).toBeVisible();
-
-  await page.context().storageState({ path: subscriberFile });
+    await page.context().storageState({ path: authFile });
+  });
 });
