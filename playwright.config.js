@@ -26,6 +26,9 @@ export default defineConfig({
     video: "retain-on-failure",
 
     ignoreHTTPSErrors: true,
+    // extraHTTPHeaders: {
+    //   'qatest': `hurayraiit`,
+    // },
   },
 
   projects: [

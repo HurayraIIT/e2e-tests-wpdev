@@ -34,14 +34,6 @@ test.describe("imgur embedding test", () => {
     await expect(frame.locator("#footer")).toMatchAriaSnapshot(`
       - text: The image of zero
       - link "image of zero"
-      - link "1":
-        - img
-      - link "1":
-        - img
-      - link /\\d+/:
-        - img
-      - link:
-        - img
       `);
     await frame.getByRole("button", { name: "Share" }).click();
     await expect(frame.locator("#shareModal div").filter({ hasText: "Copy" }).nth(4)).toBeVisible();
@@ -87,14 +79,6 @@ test.describe("imgur embedding test", () => {
     await expect(frame.locator("#footer")).toMatchAriaSnapshot(`
       - text: The image of zero
       - link "image of zero"
-      - link "1":
-        - img
-      - link "1":
-        - img
-      - link /\\d+/:
-        - img
-      - link:
-        - img
       `);
     await frame.getByRole("button", { name: "Share" }).click();
     await expect(frame.locator("#shareLink")).toBeVisible();

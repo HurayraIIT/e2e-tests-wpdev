@@ -17,6 +17,16 @@ const data = [
     doc: "https://embedpress.com/docs/embed-instagram-wordpress/",
   },
   {
+    img: `${image_path}/airtable.png`,
+    name: "Airtable",
+    doc: "https://embedpress.com/docs/embed-airtable-workspace-with-embedpress/",
+  },
+  {
+    img: `${image_path}/canva.webp`,
+    name: "Canva",
+    doc: "https://embedpress.com/docs/embed-canva-in-wordpress/",
+  },
+  {
     img: `${image_path}/youtube.png`,
     name: "YouTube",
     doc: "https://embedpress.com/docs/embed-youtube-wordpress/",

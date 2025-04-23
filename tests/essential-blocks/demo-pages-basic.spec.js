@@ -1,5 +1,6 @@
 //@ts-check
-import { test, expect } from "../../utils/base";
+// import { test, expect } from "../../utils/base";
+import { test, expect } from "@playwright/test";
 
 const base_url = `${process.env.BASE_URL}`;
 const demo_page_urls = {
