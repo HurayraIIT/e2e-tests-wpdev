@@ -48,7 +48,7 @@ test.describe("Betterlinks @betterlinks", () => {
 
     // Assert link functionality
     await page.goto(short_link);
-    await expect.soft(page.url()).toBe(target_link);
+    expect.soft(page.url()).toBe(target_link);
 
     // Delete the link
     await page.goto("/wp-admin/admin.php?page=betterlinks");
