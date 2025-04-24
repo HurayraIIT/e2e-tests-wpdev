@@ -22,8 +22,8 @@ export default defineConfig({
     testIdAttribute: "data-id",
 
     screenshot: "on",
-    trace: "retain-on-failure",
-    video: "retain-on-failure",
+    trace: "on",
+    video: "on",
 
     ignoreHTTPSErrors: true,
     // extraHTTPHeaders: {
