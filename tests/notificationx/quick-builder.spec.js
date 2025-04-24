@@ -2,6 +2,8 @@
 import { test, expect } from "@playwright/test";
 import { randomSlug, randomString } from "../../utils/random-data";
 
+test.use({ viewport: { width: 1600, height: 900 } });
+
 test.describe("Notificationx Quick Builder @notificationx", () => {
   test("can create notifcaiton using the quick builder @happy", async ({ browser }) => {
     const context = await browser.newContext({ storageState: "playwright/.auth/admin.json" });
